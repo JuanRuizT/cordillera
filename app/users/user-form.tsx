@@ -35,7 +35,7 @@ function UserForm({
       {user && <input type="hidden" name="id" value={user.id} />}
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Nombre</label>
+        <label className="text-sm font-medium">Name</label>
         <Input name="name" defaultValue={user?.name ?? ''} />
       </div>
 
@@ -50,7 +50,7 @@ function UserForm({
       </div>
 
       <Button type="submit" disabled={pending}>
-        {pending ? 'Guardando...' : user ? 'Actualizar' : 'Crear'}
+        {pending ? 'Saving...' : user ? 'Update' : 'Create'}
       </Button>
     </form>
   )
@@ -75,7 +75,7 @@ export function UsersClient({ users }: { users: User[] }) {
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>{editingUser ? 'Editar Usuario' : 'Nuevo Usuario'}</SheetTitle>
+            <SheetTitle>{editingUser ? 'Edit User' : 'New User'}</SheetTitle>
           </SheetHeader>
           <UserForm
             key={editingUser?.id ?? 'new'}
@@ -86,23 +86,23 @@ export function UsersClient({ users }: { users: User[] }) {
       </Sheet>
 
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Usuarios</h1>
-        <Button onClick={openCreate}>+ Nuevo Usuario</Button>
+        <h1 className="text-2xl font-bold">Users</h1>
+        <Button onClick={openCreate}>+ New User</Button>
       </div>
 
       {users.length === 0 ? (
         <p className="text-muted-foreground text-center py-12">
-          No hay usuarios aún. ¡Crea el primero!
+          No users yet. Create the first one!
         </p>
       ) : (
         <div className="rounded-md border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Nombre</th>
+                <th className="px-4 py-3 text-left font-medium">Name</th>
                 <th className="px-4 py-3 text-left font-medium">Email</th>
                 <th className="px-4 py-3 text-left font-medium">Todos</th>
-                <th className="px-4 py-3 text-right font-medium">Acciones</th>
+                <th className="px-4 py-3 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -118,7 +118,7 @@ export function UsersClient({ users }: { users: User[] }) {
                         size="sm"
                         onClick={() => openEdit(user)}
                       >
-                        Editar
+                        Edit
                       </Button>
                       <form action={deleteUser}>
                         <input type="hidden" name="id" value={user.id} />
@@ -128,7 +128,7 @@ export function UsersClient({ users }: { users: User[] }) {
                           size="sm"
                           className="text-destructive hover:text-destructive"
                         >
-                          Eliminar
+                          Delete
                         </Button>
                       </form>
                     </div>

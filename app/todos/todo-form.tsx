@@ -45,12 +45,12 @@ function TodoForm({
       {todo && <input type="hidden" name="id" value={todo.id} />}
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Título *</label>
+        <label className="text-sm font-medium">Title *</label>
         <Input name="title" defaultValue={todo?.title ?? ''} required />
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Descripción</label>
+        <label className="text-sm font-medium">Description</label>
         <textarea
           name="description"
           defaultValue={todo?.description ?? ''}
@@ -59,14 +59,14 @@ function TodoForm({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Autor *</label>
+        <label className="text-sm font-medium">Author *</label>
         <select
           name="authorId"
           defaultValue={todo?.authorId ?? ''}
           required
           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <option value="">Seleccionar usuario...</option>
+          <option value="">Select user...</option>
           {users.map((u) => (
             <option key={u.id} value={u.id}>
               {u.name ?? u.email}
@@ -76,7 +76,7 @@ function TodoForm({
       </div>
 
       <Button type="submit" disabled={pending}>
-        {pending ? 'Guardando...' : todo ? 'Actualizar' : 'Crear'}
+        {pending ? 'Saving...' : todo ? 'Update' : 'Create'}
       </Button>
     </form>
   )
@@ -107,7 +107,7 @@ export function TodosClient({
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>{editingTodo ? 'Editar Todo' : 'Nuevo Todo'}</SheetTitle>
+            <SheetTitle>{editingTodo ? 'Edit Todo' : 'New Todo'}</SheetTitle>
           </SheetHeader>
           <TodoForm
             key={editingTodo?.id ?? 'new'}
@@ -119,24 +119,24 @@ export function TodosClient({
       </Sheet>
 
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Mis Todos</h1>
-        <Button onClick={openCreate}>+ Nuevo Todo</Button>
+        <h1 className="text-2xl font-bold">My Todos</h1>
+        <Button onClick={openCreate}>+ New Todo</Button>
       </div>
 
       {todos.length === 0 ? (
         <p className="text-muted-foreground text-center py-12">
-          No hay todos aún. ¡Crea el primero!
+          No todos yet. Create the first one!
         </p>
       ) : (
         <div className="rounded-md border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Título</th>
-                <th className="px-4 py-3 text-left font-medium">Descripción</th>
-                <th className="px-4 py-3 text-left font-medium">Estado</th>
-                <th className="px-4 py-3 text-left font-medium">Autor</th>
-                <th className="px-4 py-3 text-right font-medium">Acciones</th>
+                <th className="px-4 py-3 text-left font-medium">Title</th>
+                <th className="px-4 py-3 text-left font-medium">Description</th>
+                <th className="px-4 py-3 text-left font-medium">Status</th>
+                <th className="px-4 py-3 text-left font-medium">Author</th>
+                <th className="px-4 py-3 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -158,7 +158,7 @@ export function TodosClient({
                           : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
                       }`}
                     >
-                      {todo.completed ? 'Completado' : 'Pendiente'}
+                      {todo.completed ? 'Completed' : 'Pending'}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
@@ -174,7 +174,7 @@ export function TodosClient({
                           value={String(todo.completed)}
                         />
                         <Button type="submit" variant="outline" size="sm">
-                          {todo.completed ? 'Desmarcar' : 'Completar'}
+                          {todo.completed ? 'Uncheck' : 'Complete'}
                         </Button>
                       </form>
                       <Button
@@ -182,12 +182,12 @@ export function TodosClient({
                         size="sm"
                         onClick={() => openEdit(todo)}
                       >
-                        Editar
+                        Edit
                       </Button>
                       <form action={deleteTodo}>
                         <input type="hidden" name="id" value={todo.id} />
                         <Button type="submit" variant="outline" size="sm" className="text-destructive hover:text-destructive">
-                          Eliminar
+                          Delete
                         </Button>
                       </form>
                     </div>
