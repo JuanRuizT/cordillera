@@ -6,8 +6,8 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
 const pageTitles: Record<string, string> = {
-  "/todos": "Mis Todos",
-  "/users": "Usuarios",
+  "/todos": "My Todos",
+  "/users": "Users",
 }
 
 export function SiteHeader() {

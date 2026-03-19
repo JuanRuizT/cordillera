@@ -17,12 +17,12 @@ import {
 
 const navItems = [
   {
-    title: "Mis Todos",
+    title: "My Todos",
     url: "/todos",
     icon: CheckSquare,
   },
   {
-    title: "Usuarios",
+    title: "Users",
     url: "/users",
     icon: Users,
   },
