@@ -1,3 +1,6 @@
+"use client"
+
+import { useActionState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
@@ -9,8 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/ui/password-input"
+import { login } from "@/app/actions/auth"
 
 export default function LoginPage() {
+  const [state, formAction, pending] = useActionState(login, undefined)
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
@@ -20,8 +27,11 @@ export default function LoginPage() {
             Enter your credentials to access your account
           </CardDescription>
         </CardHeader>
-        <form>
+        <form action={formAction}>
           <CardContent className="space-y-4">
+            {state?.message && (
+              <p className="text-sm text-destructive">{state.message}</p>
+            )}
             <div className="space-y-2">
               <label
                 htmlFor="email"
@@ -31,6 +41,7 @@ export default function LoginPage() {
               </label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="email@example.com"
                 required
@@ -51,12 +62,12 @@ export default function LoginPage() {
                   Forgot password?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <PasswordInput id="password" name="password" required />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button type="submit" className="w-full" disabled={pending}>
+              {pending ? "Signing in..." : "Sign In"}
             </Button>
             <p className="text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
