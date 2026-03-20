@@ -16,7 +16,7 @@ export async function createUser(_prevState: null, formData: FormData) {
 }
 
 export async function updateUser(_prevState: null, formData: FormData) {
-  const id = parseInt(formData.get('id') as string)
+  const id = formData.get('id') as string
   const name = formData.get('name') as string | null
   const email = formData.get('email') as string
 
@@ -30,7 +30,7 @@ export async function updateUser(_prevState: null, formData: FormData) {
 }
 
 export async function deleteUser(formData: FormData) {
-  const id = parseInt(formData.get('id') as string)
+  const id = formData.get('id') as string
 
   await prisma.user.delete({ where: { id } })
 

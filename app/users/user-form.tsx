@@ -10,8 +10,19 @@ import {
 } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
-type User = { id: number; name: string | null; email: string; _count: { todos: number } }
+type User = { id: string; name: string | null; email: string; _count: { todos: number } }
 
 function UserForm({
   user,
@@ -120,17 +131,49 @@ export function UsersClient({ users }: { users: User[] }) {
                       >
                         Edit
                       </Button>
-                      <form action={deleteUser}>
-                        <input type="hidden" name="id" value={user.id} />
-                        <Button
-                          type="submit"
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive hover:text-destructive"
-                        >
-                          Delete
-                        </Button>
-                      </form>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="text-destructive hover:text-destructive"
+                          >
+                            Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This will delete the user{' '}
+                              <span className="font-semibold">{user.name || user.email}</span>
+                              {user._count.todos > 0 && (
+                                <>
+                                  {' and '}
+                                  <span className="font-semibold">
+                                    {user._count.todos} todo{user._count.todos === 1 ? '' : 's'}
+                                  </span>
+                                </>
+                              )}
+                              . This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => {
+                                const formData = new FormData()
+                                formData.append('id', user.id)
+                                deleteUser(formData)
+                              }}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </td>
                 </tr>
