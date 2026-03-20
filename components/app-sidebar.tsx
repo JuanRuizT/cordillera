@@ -1,12 +1,13 @@
 "use client"
 
-import { CheckSquare, Users, Mountain } from "lucide-react"
+import { CheckSquare, Users, Mountain, LogOut } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -14,6 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { logout } from "@/app/actions/auth"
 
 const navItems = [
   {
@@ -28,7 +30,13 @@ const navItems = [
   },
 ]
 
-export function AppSidebar() {
+type User = {
+  name?: string | null
+  email?: string | null
+  image?: string | null
+}
+
+export function AppSidebar({ user }: { user: User | null }) {
   const pathname = usePathname()
 
   return (
@@ -68,6 +76,37 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <div className="flex w-full items-center gap-2 overflow-hidden rounded-md px-2 py-1.5 text-sm">
+              <div className="flex min-w-0 flex-1 flex-col">
+                <span className="truncate font-medium">
+                  {user?.name ?? user?.email ?? "User"}
+                </span>
+                {user?.name && user?.email && (
+                  <span className="truncate text-xs text-muted-foreground">
+                    {user.email}
+                  </span>
+                )}
+              </div>
+            </div>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <form action={logout}>
+              <SidebarMenuButton
+                type="submit"
+                tooltip="Log out"
+                className="w-full text-muted-foreground hover:text-foreground"
+              >
+                <LogOut />
+                <span>Log out</span>
+              </SidebarMenuButton>
+            </form>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   )
 }
