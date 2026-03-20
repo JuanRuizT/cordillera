@@ -39,7 +39,7 @@ export function AppSidebar() {
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <Link href="/todos">
                 <Mountain className="mr-2 h-6 w-6 !size-5" />
-                <span className="text-base font-semibold">Cordillera</span>
+                <span className="text-base font-semibold">CBTW-demo</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

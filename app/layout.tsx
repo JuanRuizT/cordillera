@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cordillera",
+  title: "CBTW-demo",
   description: "Next.js app with Prisma and shadcn/ui",
 };
 
