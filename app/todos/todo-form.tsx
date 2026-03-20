@@ -11,13 +11,13 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-type User = { id: number; name: string | null; email: string }
+type User = { id: string; name: string | null; email: string }
 type Todo = {
-  id: number
+  id: string
   title: string
   description: string | null
   completed: boolean
-  authorId: number
+  authorId: string
   author: { name: string | null; email: string }
 }
 
@@ -58,22 +58,24 @@ function TodoForm({
         />
       </div>
 
-      <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Author *</label>
-        <select
-          name="authorId"
-          defaultValue={todo?.authorId ?? ''}
-          required
-          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <option value="">Select user...</option>
-          {users.map((u) => (
-            <option key={u.id} value={u.id}>
-              {u.name ?? u.email}
-            </option>
-          ))}
-        </select>
-      </div>
+      {todo && (
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium">Author *</label>
+          <select
+            name="authorId"
+            defaultValue={todo.authorId}
+            required
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <option value="">Select user...</option>
+            {users.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.name ?? u.email}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <Button type="submit" disabled={pending}>
         {pending ? 'Saving...' : todo ? 'Update' : 'Create'}
