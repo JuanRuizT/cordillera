@@ -15,6 +15,7 @@ import {
   CheckCircle,
   Clock,
   ExternalLink,
+  RotateCcw,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -293,7 +294,25 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
         {/* Chat Panel */}
         <Card className="lg:col-span-2 flex flex-col overflow-hidden">
           <CardHeader className="pb-3 shrink-0">
-            <CardTitle className="text-base">Chat with documents</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base">Chat with documents</CardTitle>
+              {messages.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setMessages([])
+                    setSourcesMap({})
+                    setExpandedSources({})
+                    setExpandedPreviews({})
+                  }}
+                  className="h-8 px-2 text-muted-foreground hover:text-foreground"
+                >
+                  <RotateCcw className="h-4 w-4 mr-1" />
+                  Clear chat
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="flex flex-col flex-1 overflow-hidden p-4 pt-0 gap-3">
             {/* Messages */}
