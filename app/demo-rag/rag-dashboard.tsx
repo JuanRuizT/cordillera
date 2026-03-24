@@ -103,10 +103,26 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
     async (file: File) => {
       setUploadError(null)
       setUploading(true)
+
+      // Check file size (Vercel has 4.5MB limit on hobby plan)
+      const maxSize = 4.5 * 1024 * 1024 // 4.5MB in bytes
+      if (file.size > maxSize) {
+        setUploadError(`File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum: 4.5MB`)
+        setUploading(false)
+        return
+      }
+
       const formData = new FormData()
       formData.append("file", file)
       try {
         const res = await fetch("/api/rag/upload", { method: "POST", body: formData })
+
+        // Check if response is JSON (not HTML error page)
+        const contentType = res.headers.get("content-type")
+        if (!contentType?.includes("application/json")) {
+          throw new Error("Server error - check Vercel logs. File may be too large or processing timed out.")
+        }
+
         const data = await res.json()
         if (!res.ok) throw new Error(data.error || "Upload failed")
         await refreshDocuments()
