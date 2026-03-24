@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { auth } from "@/auth"
 
-const protectedRoutes = ["/todos", "/users"]
+const protectedRoutes = ["/demo-rag", "/todos", "/users"]
 const publicRoutes = ["/login", "/signup"]
 
 export default async function proxy(req: NextRequest) {
@@ -16,7 +16,7 @@ export default async function proxy(req: NextRequest) {
   }
 
   if (isPublic && session) {
-    return NextResponse.redirect(new URL("/todos", req.nextUrl))
+    return NextResponse.redirect(new URL("/demo-rag", req.nextUrl))
   }
 
   return NextResponse.next()

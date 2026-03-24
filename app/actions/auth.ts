@@ -58,7 +58,7 @@ export async function signup(
     data: { name, email, password: hashedPassword },
   })
 
-  await signIn("credentials", { email, password, redirectTo: "/todos" })
+  await signIn("credentials", { email, password, redirectTo: "/demo-rag" })
 }
 
 const LoginSchema = z.object({
@@ -85,7 +85,7 @@ export async function login(
     await signIn("credentials", {
       email: result.data.email,
       password: result.data.password,
-      redirectTo: "/todos",
+      redirectTo: "/demo-rag",
     })
   } catch (error) {
     if (isRedirectError(error)) throw error
