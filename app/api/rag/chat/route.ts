@@ -67,8 +67,10 @@ Always answer in the language of the user's question.`,
   const response = result.toTextStreamResponse()
 
   // Attach sources as a header so the client can display references
+  // Base64 encode to handle Unicode characters in content
   const headers = new Headers(response.headers)
-  headers.set("X-Rag-Sources", JSON.stringify(sources))
+  const sourcesBase64 = Buffer.from(JSON.stringify(sources), 'utf-8').toString('base64')
+  headers.set("X-Rag-Sources", sourcesBase64)
   headers.set("Access-Control-Expose-Headers", "X-Rag-Sources")
 
   return new Response(response.body, {

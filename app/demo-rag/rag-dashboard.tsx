@@ -170,11 +170,12 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
           return
         }
 
-        // Parse sources from headers
+        // Parse sources from headers (Base64 encoded to handle Unicode)
         const sourcesHeader = res.headers.get("X-Rag-Sources")
         if (sourcesHeader) {
           try {
-            const sources: RagSource[] = JSON.parse(sourcesHeader)
+            const sourcesJson = atob(sourcesHeader)
+            const sources: RagSource[] = JSON.parse(sourcesJson)
             setSourcesMap((prev) => ({ ...prev, [assistantId]: sources }))
           } catch {
             // ignore
