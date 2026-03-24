@@ -5,7 +5,7 @@ import { UsersClient } from './user-form'
 export default async function UsersPage() {
   const users = await prisma.user.findMany({
     orderBy: { name: 'asc' },
-    include: { _count: { select: { todos: true } } },
+    include: { _count: { select: { ragDocuments: true } } },
   })
 
   return (

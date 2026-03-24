@@ -22,7 +22,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 
-type User = { id: string; name: string | null; email: string; _count: { todos: number } }
+type User = { id: string; name: string | null; email: string; _count: { ragDocuments: number } }
 
 function UserForm({
   user,
@@ -112,7 +112,7 @@ export function UsersClient({ users }: { users: User[] }) {
               <tr className="border-b bg-muted/50">
                 <th className="px-4 py-3 text-left font-medium">Name</th>
                 <th className="px-4 py-3 text-left font-medium">Email</th>
-                <th className="px-4 py-3 text-left font-medium">Todos</th>
+                <th className="px-4 py-3 text-left font-medium">Documents</th>
                 <th className="px-4 py-3 text-right font-medium">Actions</th>
               </tr>
             </thead>
@@ -121,7 +121,7 @@ export function UsersClient({ users }: { users: User[] }) {
                 <tr key={user.id} className="border-b last:border-0">
                   <td className="px-4 py-3">{user.name ?? '—'}</td>
                   <td className="px-4 py-3 text-muted-foreground">{user.email}</td>
-                  <td className="px-4 py-3">{user._count.todos}</td>
+                  <td className="px-4 py-3">{user._count.ragDocuments}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
                       <Button
@@ -148,11 +148,11 @@ export function UsersClient({ users }: { users: User[] }) {
                             <AlertDialogDescription>
                               This will delete the user{' '}
                               <span className="font-semibold">{user.name || user.email}</span>
-                              {user._count.todos > 0 && (
+                              {user._count.ragDocuments > 0 && (
                                 <>
                                   {' and '}
                                   <span className="font-semibold">
-                                    {user._count.todos} todo{user._count.todos === 1 ? '' : 's'}
+                                    {user._count.ragDocuments} document{user._count.ragDocuments === 1 ? '' : 's'}
                                   </span>
                                 </>
                               )}
