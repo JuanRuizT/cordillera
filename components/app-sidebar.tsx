@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckSquare, Users, Mountain, LogOut } from "lucide-react"
+import { CheckSquare, Users, Mountain, LogOut, BrainCircuit } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -27,6 +27,11 @@ const navItems = [
     title: "Users",
     url: "/users",
     icon: Users,
+  },
+  {
+    title: "Demo RAG",
+    url: "/demo-rag",
+    icon: BrainCircuit,
   },
 ]
 
