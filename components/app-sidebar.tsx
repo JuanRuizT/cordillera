@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckSquare, Users, Mountain, LogOut, BrainCircuit } from "lucide-react"
+import { Users, Mountain, LogOut, BrainCircuit } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -19,19 +19,14 @@ import { logout } from "@/app/actions/auth"
 
 const navItems = [
   {
-    title: "My Todos",
-    url: "/todos",
-    icon: CheckSquare,
+    title: "Demo RAG",
+    url: "/demo-rag",
+    icon: BrainCircuit,
   },
   {
     title: "Users",
     url: "/users",
     icon: Users,
-  },
-  {
-    title: "Demo RAG",
-    url: "/demo-rag",
-    icon: BrainCircuit,
   },
 ]
 
