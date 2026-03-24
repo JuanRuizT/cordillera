@@ -1,4 +1,4 @@
-import { PDFParse } from "pdf-parse"
+import * as pdfjs from "pdfjs-dist/legacy/build/pdf.mjs"
 
 export interface PageContent {
   pageNumber: number
@@ -6,31 +6,43 @@ export interface PageContent {
 }
 
 export async function extractPdfPages(buffer: Buffer): Promise<PageContent[]> {
-  const parser = new PDFParse({ data: buffer })
+  // Load the PDF document
+  const loadingTask = pdfjs.getDocument({
+    data: new Uint8Array(buffer),
+    useSystemFonts: true,
+  })
 
-  try {
-    const result = await parser.getText()
+  const pdf = await loadingTask.promise
+  const pages: PageContent[] = []
 
-    const pages: PageContent[] = result.pages
-      .map((page) => ({
-        pageNumber: page.num,
-        text: page.text.trim(),
-      }))
-      .filter((page) => page.text.length > 10)
+  // Extract text from each page
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i)
+    const textContent = await page.getTextContent()
 
-    return pages
-  } finally {
-    await parser.destroy()
+    // Combine all text items into a single string
+    const text = textContent.items
+      .map((item: any) => ("str" in item ? item.str : ""))
+      .join(" ")
+      .trim()
+
+    if (text.length > 10) {
+      pages.push({
+        pageNumber: i,
+        text,
+      })
+    }
   }
+
+  return pages
 }
 
 export async function getPdfPageCount(buffer: Buffer): Promise<number> {
-  const parser = new PDFParse({ data: buffer })
+  const loadingTask = pdfjs.getDocument({
+    data: new Uint8Array(buffer),
+    useSystemFonts: true,
+  })
 
-  try {
-    const result = await parser.getText()
-    return result.total
-  } finally {
-    await parser.destroy()
-  }
+  const pdf = await loadingTask.promise
+  return pdf.numPages
 }
