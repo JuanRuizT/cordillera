@@ -221,7 +221,7 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
       <div>
         <h1 className="text-2xl font-bold">Demo RAG</h1>
         <p className="text-muted-foreground text-sm mt-1">
-          Sube documentos y conversa con ellos usando Gemini + Embeddings 2.0
+          Upload documents and chat with them using Gemini + Embeddings 2.0
         </p>
       </div>
 
@@ -231,7 +231,7 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
         {/* Document Panel */}
         <Card className="flex flex-col overflow-hidden">
           <CardHeader className="pb-3 shrink-0">
-            <CardTitle className="text-base">Documentos</CardTitle>
+            <CardTitle className="text-base">Documents</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-3 flex-1 overflow-hidden p-4 pt-0">
             {/* Upload Zone */}
@@ -258,10 +258,10 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
               />
               <Upload className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
               {uploading ? (
-                <p className="text-sm text-muted-foreground">Procesando documento...</p>
+                <p className="text-sm text-muted-foreground">Processing document...</p>
               ) : (
                 <>
-                  <p className="text-sm font-medium">Arrastra un archivo o haz clic</p>
+                  <p className="text-sm font-medium">Drag a file or click</p>
                   <p className="text-xs text-muted-foreground mt-1">PDF, JPG, PNG, WebP</p>
                 </>
               )}
@@ -278,7 +278,7 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
             <div className="flex-1 overflow-y-auto space-y-2">
               {documents.length === 0 ? (
                 <p className="text-xs text-muted-foreground text-center py-4">
-                  No hay documentos aún
+                  No documents yet
                 </p>
               ) : (
                 documents.map((doc) => (
@@ -292,7 +292,7 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
         {/* Chat Panel */}
         <Card className="lg:col-span-2 flex flex-col overflow-hidden">
           <CardHeader className="pb-3 shrink-0">
-            <CardTitle className="text-base">Chat con documentos</CardTitle>
+            <CardTitle className="text-base">Chat with documents</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col flex-1 overflow-hidden p-4 pt-0 gap-3">
             {/* Messages */}
@@ -300,7 +300,7 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
               {messages.length === 0 && (
                 <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
                   <Bot className="h-12 w-12 mb-3 opacity-30" />
-                  <p className="text-sm">Haz una pregunta sobre tus documentos</p>
+                  <p className="text-sm">Ask a question about your documents</p>
                 </div>
               )}
 
@@ -343,7 +343,7 @@ export function RagDashboard({ initialDocuments, isConfigured }: RagDashboardPro
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={
-                  !hasReadyDocs ? "Sube un documento primero..." : "Escribe tu pregunta..."
+                  !hasReadyDocs ? "Upload a document first..." : "Type your question..."
                 }
                 disabled={isStreaming || !hasReadyDocs}
                 className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
@@ -387,7 +387,7 @@ function DocumentCard({
         <div className="flex items-center gap-2 mt-0.5 flex-wrap">
           <StatusBadge status={doc.status} />
           {doc.pageCount && (
-            <span className="text-xs text-muted-foreground">{doc.pageCount} pág.</span>
+            <span className="text-xs text-muted-foreground">{doc.pageCount} pages</span>
           )}
           {doc.status === "ready" && doc._count.chunks > 0 && (
             <span className="text-xs text-muted-foreground">{doc._count.chunks} chunks</span>
@@ -411,14 +411,14 @@ function StatusBadge({ status }: { status: DocStatus }) {
   if (status === "ready") {
     return (
       <span className="flex items-center gap-0.5 text-xs text-green-600">
-        <CheckCircle className="h-3 w-3" /> Listo
+        <CheckCircle className="h-3 w-3" /> Ready
       </span>
     )
   }
   if (status === "processing") {
     return (
       <span className="flex items-center gap-0.5 text-xs text-yellow-600">
-        <Clock className="h-3 w-3 animate-pulse" /> Procesando
+        <Clock className="h-3 w-3 animate-pulse" /> Processing
       </span>
     )
   }
@@ -492,7 +492,7 @@ function ChatMessageItem({
               ) : (
                 <ChevronDown className="h-3 w-3" />
               )}
-              {sources.length} fuente{sources.length !== 1 ? "s" : ""}
+              {sources.length} source{sources.length !== 1 ? "s" : ""}
             </button>
 
             {expandedSources[message.id] && (
@@ -511,18 +511,18 @@ function ChatMessageItem({
                           <p className="text-xs font-medium truncate">{source.name}</p>
                           {source.pageNumber && (
                             <p className="text-xs text-muted-foreground">
-                              Página {source.pageNumber}
+                              Page {source.pageNumber}
                             </p>
                           )}
                         </div>
                         <span className="text-xs text-muted-foreground shrink-0">
-                          {Math.round(source.similarity * 100)}% relevancia
+                          {Math.round(source.similarity * 100)}% relevance
                         </span>
                         <button
                           onClick={() => onTogglePreview(previewKey)}
                           className="text-xs text-primary hover:underline shrink-0 flex items-center gap-1"
                         >
-                          {isPreviewOpen ? "Ocultar" : "Ver"}
+                          {isPreviewOpen ? "Hide" : "View"}
                           {!isPreviewOpen && <ExternalLink className="h-3 w-3" />}
                         </button>
                       </div>
@@ -571,11 +571,11 @@ function SetupBanner() {
         <AlertCircle className="h-4 w-4 text-yellow-600 shrink-0 mt-0.5" />
         <div>
           <p className="font-semibold text-yellow-800 dark:text-yellow-400">
-            Configuración requerida
+            Configuration required
           </p>
           <p className="text-yellow-700 dark:text-yellow-500 mt-1">
-            Agrega estas variables en tu archivo{" "}
-            <code className="font-mono bg-yellow-100 dark:bg-yellow-900 px-1 rounded">.env</code>:
+            Add these variables to your{" "}
+            <code className="font-mono bg-yellow-100 dark:bg-yellow-900 px-1 rounded">.env</code> file:
           </p>
           <div className="mt-2 space-y-1 font-mono text-xs bg-yellow-100 dark:bg-yellow-900 rounded p-2">
             <p>
@@ -584,17 +584,17 @@ function SetupBanner() {
             </p>
             <p>
               GOOGLE_CLOUD_PROJECT_ID=
-              <span className="text-muted-foreground"> # ID del proyecto GCS</span>
+              <span className="text-muted-foreground"> # GCS project ID</span>
             </p>
             <p>
               GOOGLE_CLOUD_BUCKET_NAME=
-              <span className="text-muted-foreground"> # Nombre del bucket</span>
+              <span className="text-muted-foreground"> # Bucket name</span>
             </p>
             <p>
               GOOGLE_CLOUD_SA_KEY=
               <span className="text-muted-foreground">
                 {" "}
-                # base64 del JSON: base64 -w0 key.json
+                # base64 of the JSON: base64 -w0 key.json
               </span>
             </p>
           </div>

@@ -44,22 +44,22 @@ export async function POST(req: Request) {
       ? chunks
           .map(
             (c, i) =>
-              `[Fuente ${i + 1} - "${c.name}"${c.pageNumber ? `, página ${c.pageNumber}` : ""}]:\n${c.content}`
+              `[Source ${i + 1} - "${c.name}"${c.pageNumber ? `, page ${c.pageNumber}` : ""}]:\n${c.content}`
           )
           .join("\n\n---\n\n")
-      : "No se encontró información relevante en los documentos disponibles."
+      : "No relevant information found in the available documents."
 
   const result = streamText({
     model: google("gemini-3-flash-preview"),
-    system: `Eres un asistente experto que responde preguntas basándote en documentos de conocimiento.
-Cuando uses información de los documentos, cita la fuente usando [Fuente N].
-Si la información no está en los documentos, indícalo claramente.
-Responde siempre en el idioma de la pregunta del usuario.`,
+    system: `You are an expert assistant who answers questions based on knowledge documents.
+When using information from the documents, cite the source using [Source N].
+If the information is not in the documents, state it clearly.
+Always answer in the language of the user's question.`,
     messages: [
       ...messages.slice(0, -1),
       {
         role: "user",
-        content: `Contexto de los documentos:\n\n${context}\n\n---\n\nPregunta: ${lastMessage}`,
+        content: `Document context:\n\n${context}\n\n---\n\nQuestion: ${lastMessage}`,
       },
     ],
   })
