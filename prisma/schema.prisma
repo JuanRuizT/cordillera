@@ -8,21 +8,289 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
+  id                String             @id @default(cuid())
+  name              String?
+  email             String             @unique
+  emailVerified     DateTime?
+  image             String?
+  password          String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  accounts          Account[]
+  todos             Todo[]
+  ragDocuments      RagDocument[]
+  bankStatements    BankStatement[]
+  accountingRecords AccountingRecord[]
+  cashReceipts      CashReceipt[]
+  contractors       Contractor[]
+  expenseVouchers   ExpenseVoucher[]
+  invoices          Invoice[]
+  abonos            Abono[]
+  financialAccounts FinancialAccount[]
+  aiCallLogs        AiCallLog[]
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+model BankStatement {
+  id                String             @id @default(cuid())
+  fileName          String
+  fileUrl           String?
+  client            String?
+  address           String?
+  city              String?
+  accountType       String?
+  accountNumber     String?
+  branch            String?
+  startDate         DateTime?
+  endDate           DateTime?
+  previousBalance   Decimal?           @db.Decimal(15, 2)
+  totalCredits      Decimal?           @db.Decimal(15, 2)
+  totalDebits       Decimal?           @db.Decimal(15, 2)
+  currentBalance    Decimal?           @db.Decimal(15, 2)
+  averageBalance    Decimal?           @db.Decimal(15, 2)
+  interest          Decimal?           @db.Decimal(15, 2)
+  taxWithholding    Decimal?           @db.Decimal(15, 2)
+  createdAt         DateTime           @default(now())
+  userId            String
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movements         BankMovement[]
+  accountingRecords AccountingRecord[]
+  aiCallLogs        AiCallLog[]
+}
+
+model BankMovement {
+  id               String            @id @default(cuid())
+  bankStatementId  String
+  bankStatement    BankStatement     @relation(fields: [bankStatementId], references: [id], onDelete: Cascade)
+  date             DateTime
+  description      String
+  branch           String?
+  document         String?
+  amount           Decimal           @db.Decimal(15, 2)
+  balance          Decimal           @db.Decimal(15, 2)
+  createdAt        DateTime          @default(now())
+  accountingRecord AccountingRecord?
+}
+
+model AccountingRecord {
+  id                      String            @id @default(cuid())
+  concept                 String
+  date                    DateTime
+  income                  Decimal?          @db.Decimal(15, 2)
+  expenses                Decimal?          @db.Decimal(15, 2)
+  category                String?
+  property                String?
+  categorySource          String            @default("manual") // "manual" | "ai"
+  categoryConfidence      Float?
+  // Per-field "a human confirmed this" flags — once true, reclassifyRecord never overwrites
+  // that field again; while false, the AI is still free to (re)propose a value for it.
+  conceptConfirmed        Boolean           @default(false)
+  categoryConfirmed       Boolean           @default(false)
+  propertyConfirmed       Boolean           @default(false)
+  cashReceiptGenerated    Boolean           @default(false)
+  expenseVoucherGenerated Boolean           @default(false)
+  paymentProofFileName    String?
+  paymentProofFileUrl     String?
+  facturaFileName         String?
+  facturaFileUrl          String?
+  accountId               String?
+  account                 FinancialAccount? @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  bankStatementId         String?
+  bankStatement           BankStatement?    @relation(fields: [bankStatementId], references: [id], onDelete: SetNull)
+  bankMovementId          String?           @unique
+  bankMovement            BankMovement?     @relation(fields: [bankMovementId], references: [id], onDelete: SetNull)
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  userId                  String
+  user                    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cashReceipts            CashReceipt[]
+  expenseVoucher          ExpenseVoucher?
+  abono                   Abono?
+}
+
+model CashReceipt {
+  id                 String           @id @default(cuid())
+  number             Int
+  amount             Decimal?         @db.Decimal(15, 2) // override; null = derivar en vivo del AccountingRecord
+  concept            String? // override; null = derivar en vivo del AccountingRecord
+  accountingRecordId String // un registro puede tener varios recibos (pago dividido en cuotas)
+  accountingRecord   AccountingRecord @relation(fields: [accountingRecordId], references: [id], onDelete: Cascade)
+  createdAt          DateTime         @default(now())
+  userId             String
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Contractor {
+  id              String           @id @default(cuid())
+  name            String
+  idType          String           @default("CC")
+  idNumber        String           @unique
+  bankName        String?
+  bankAccount     String?
+  bankAccountType String? // "Ahorros" | "Corriente"
+  phone           String?
+  email           String?
+  rutFileName     String?
+  rutFileUrl      String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expenseVouchers ExpenseVoucher[]
+  invoices        Invoice[]
+}
+
+model Invoice {
+  id            String     @id @default(cuid())
+  number        Int?
+  contractorId  String
+  contractor    Contractor @relation(fields: [contractorId], references: [id], onDelete: Cascade)
+  date          DateTime
+  concept       String
+  totalAmount   Decimal    @db.Decimal(15, 2)
+  retentionRate Decimal?   @db.Decimal(5, 2)
+  bankInfo      String?
+  fileName      String?
+  fileUrl       String?
+  notes         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  abonos        Abono[]
+}
+
+model ExpenseVoucher {
+  id                 String           @id @default(cuid())
+  number             Int
+  accountingRecordId String           @unique
+  accountingRecord   AccountingRecord @relation(fields: [accountingRecordId], references: [id], onDelete: Cascade)
+  contractorId       String?
+  contractor         Contractor?      @relation(fields: [contractorId], references: [id], onDelete: SetNull)
+  createdAt          DateTime         @default(now())
+  userId             String
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Abono {
+  id                 String            @id @default(cuid())
+  invoiceId          String
+  invoice            Invoice           @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  accountingRecordId String?           @unique
+  accountingRecord   AccountingRecord? @relation(fields: [accountingRecordId], references: [id], onDelete: Cascade)
+  // Solo se usan cuando accountingRecordId es null (abono manual sin registro contable).
+  // Si accountingRecordId está seteado, fecha/monto/concepto se leen del registro ligado.
+  date               DateTime?
+  amount             Decimal?          @db.Decimal(15, 2)
+  concept            String?
+  createdAt          DateTime          @default(now())
+  userId             String
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Named FinancialAccount (not "Account") to avoid colliding with NextAuth's OAuth Account model.
+model FinancialAccount {
+  id                String             @id @default(cuid())
+  name              String
+  type              String             @default("cash") // "bank" | "cash"
+  bankAccountNumber String?            @unique
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  userId            String
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountingRecords AccountingRecord[]
+}
+
+model RagDocument {
+  id           String     @id @default(cuid())
+  name         String
+  originalName String
+  gcsPath      String
+  mimeType     String
+  status       String     @default("processing")
+  pageCount    Int?
+  errorMessage String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chunks       RagChunk[]
+}
+
+model RagChunk {
+  id         String      @id @default(cuid())
+  documentId String
+  document   RagDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  content    String
+  pageNumber Int?
+  chunkIndex Int
+  createdAt  DateTime    @default(now())
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Todo {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  completed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId    String
+}
+
+model Owner {
+  id                String   @id @default(cuid())
+  unit              String   @unique
+  aptArea           Float
+  aptCoefficient    Float
+  garageArea        Float
+  garageCoefficient Float
+  totalCoefficient  Float
+  name              String
+  cedula            String   @unique
+  address           String
+  phone             String
+  email             String?
+  monthlyFee        Decimal? @db.Decimal(15, 2)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model AiCallLog {
+  id               String         @id @default(cuid())
+  userId           String
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feature          String // "bank_statement_classification" | "invoice_extraction"
+  model            String // e.g. "gemini-3.1-flash-lite"
+  success          Boolean
+  errorMessage     String?
+  inputTokens      Int?
+  outputTokens     Int?
+  totalTokens      Int?
+  estimatedCostUsd Decimal?       @db.Decimal(12, 6)
+  itemCount        Int? // movimientos clasificados o documentos extraídos en este llamado
+  durationMs       Int?
+  bankStatementId  String?
+  bankStatement    BankStatement? @relation(fields: [bankStatementId], references: [id], onDelete: SetNull)
+  createdAt        DateTime       @default(now())
+
+  @@index([userId, createdAt])
 }

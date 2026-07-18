@@ -1,0 +1,47 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(git *)",
+      "Bash(neon *)",
+      "Bash(psql *)",
+      "Bash(command -v *)",
+      "Bash(awk *)",
+      "Bash(grep *)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(cd *)",
+      "Bash(curl *)",
+      "Bash(netstat *)",
+      "Bash(jobs *)",
+      "Bash(exit *)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "Read(//d/proyectos/**)",
+      "Read(//c/Users/jart/.claude/projects/c--proyectos-cordillera/**)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Skill(*)",
+      "Bash(npm run *)",
+      "Bash(command -v psql)",
+      "Bash(psql --version)",
+      "Bash(node \"C:\\\\Users\\\\jart\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--proyectos-cordillera\\\\cf28ee49-b0d9-4c51-b176-b837913844c7\\\\scratchpad\\\\query-accounting.mjs\")",
+      "Bash(cp \"C:\\\\Users\\\\jart\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--proyectos-cordillera\\\\cf28ee49-b0d9-4c51-b176-b837913844c7\\\\scratchpad\\\\query-accounting.mjs\" \"c:/proyectos/cordillera/.tmp-query.mjs\")",
+      "Bash(node .tmp-query.mjs)",
+      "Bash(sed -i \"s/to_char\\(date,'YYYY-MM'\\) month,/to_char\\(date,'YYYY-MM'\\) AS \\\\\"month\\\\\",/\" .tmp-query.mjs)",
+      "Bash(sed -i \"s/GROUP BY 1 ORDER BY 1\\\\`/GROUP BY 1 ORDER BY 1\\\\`/\" .tmp-query.mjs)",
+      "Bash(npx shadcn@latest add chart)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/accounting/analysis)",
+      "Bash(xargs grep -liE \"cuota|presupuesto|budget|monthlyFee|administracion\")",
+      "Bash(cat)",
+      "Bash(node .tmp-verify.mjs)",
+      "Bash(rm .tmp-verify.mjs)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/accounting/paz-y-salvo)"
+    ],
+    "additionalDirectories": [
+      "D:\\proyectos\\cordillera",
+      "c:\\proyectos\\cordillera\\app\\api"
+    ]
+  }
+}

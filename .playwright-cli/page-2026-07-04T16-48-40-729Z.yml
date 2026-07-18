@@ -1,0 +1,38 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: Crear una cuenta
+      - generic [ref=e6]: Ingresa tu información para crear tu cuenta
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - text: Nombre completo
+          - textbox "Nombre completo" [ref=e10]:
+            - /placeholder: Juan Pérez
+        - generic [ref=e11]:
+          - text: Correo electrónico
+          - textbox "Correo electrónico" [ref=e12]:
+            - /placeholder: correo@ejemplo.com
+        - generic [ref=e13]:
+          - text: Contraseña
+          - generic [ref=e14]:
+            - textbox "Contraseña" [ref=e15]:
+              - /placeholder: Crea una contraseña segura
+            - button "Show password" [ref=e16]:
+              - img
+        - generic [ref=e17]:
+          - text: Confirmar contraseña
+          - generic [ref=e18]:
+            - textbox "Confirmar contraseña" [ref=e19]:
+              - /placeholder: Confirma tu contraseña
+            - button "Show password" [ref=e20]:
+              - img
+      - generic [ref=e21]:
+        - button "Crear cuenta" [ref=e22]
+        - paragraph [ref=e23]:
+          - text: ¿Ya tienes una cuenta?
+          - link "Inicia sesión" [ref=e24] [cursor=pointer]:
+            - /url: /login
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e30] [cursor=pointer]:
+    - img [ref=e31]
