@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "herdr": {
+      "source": "herdrdev/herdr",
+      "sourceType": "github",
+      "skillPath": "skills/herdr/SKILL.md",
+      "computedHash": "d824171f4aa79369c62943403c760d71af7a9944ebe8bd096b8ad75880fb9290"
+    }
+  }
+}

@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cordillera
+
+A comprehensive Todo application built with the modern Next.js App Router. It features a complete stack utilizing Next.js, Tailwind CSS for styling, shadcn/ui for beautiful and accessible components, and Prisma ORM coupled with PostgreSQL for robust data management.
+
+## Features
+
+- **Manage Todos**: Create, read, update, and delete tasks.
+- **User Assignment**: Assign todos to specific users.
+- **Modern UI**: Clean and responsive interface built with Tailwind CSS and Radix UI components.
+- **Database Integrated**: Persistent data storage using Prisma and PostgreSQL.
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js (version 18 or higher recommended)
+- A running instance of PostgreSQL (or a provider like Neon, Supabase, etc.)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation & Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Install dependencies:**
 
-## Learn More
+   ```bash
+   npm install
+   # or
+   pnpm install
+   # or
+   yarn install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Environment Variables:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   Create a `.env` file in the root directory and add your PostgreSQL database connection string:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```env
+   DATABASE_URL="postgresql://user:password@localhost:5432/cordilleradb?schema=public"
+   ```
 
-## Deploy on Vercel
+3. **Database Setup:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   Push the Prisma schema to your database to create the necessary tables:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm run db:push
+   ```
+
+   _Alternatively, if you're using migrations:_
+
+   ```bash
+   npm run db:migrate
+   ```
+
+4. **Generate Prisma Client:**
+
+   _(This is usually run automatically during postinstall, but you can run it manually if needed)_
+
+   ```bash
+   npm run db:generate
+   ```
+
+5. **Start the Development Server:**
+
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. The app automatically redirects to the `/todos` page.
+
+## Technologies Used
+
+- [Next.js](https://nextjs.org/) - React framework
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Prisma](https://www.prisma.io/) - Next-generation Node.js and TypeScript ORM
+- [Radix UI](https://www.radix-ui.com/) (shadcn/ui) - Unstyled, accessible UI components
+
+## License
+
+This project is private.
